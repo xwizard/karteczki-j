@@ -78,4 +78,23 @@ public class BoxTest {
     
     Assert.assertTrue(box.containsCard(4, cardId));
   }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void advanceNotExisitingCard() {
+    box.advanceCard(cardId);
+  }
+  
+  @Test(expected = NullPointerException.class)
+  public void advanceNullCard() {
+    box.advanceCard(null);
+  }
+  
+  @Test
+  public void advanceCardFromLastCompartment() {
+    box.addCard(4, cardId);
+    
+    box.advanceCard(cardId);
+    
+    Assert.assertFalse(box.containsCard(cardId));
+  }
 }

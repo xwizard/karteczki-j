@@ -55,7 +55,9 @@ public class Box {
 
   public void moveCardToFirst(UUID cardId) {
     checkNull(cardId);
+    
     int compartment = findCard(cardId);
+    
     if (compartment < 0) cardDoesntExist(cardId);
     
     compartments.get(compartment).remove(cardId);
@@ -67,9 +69,17 @@ public class Box {
   }
 
   public void advanceCard(UUID cardId) {
+    checkNull(cardId);
+    
     int compartment = findCard(cardId);
+    
+    if (compartment < 0) cardDoesntExist(cardId);
+    
     compartments.get(compartment).remove(cardId);
-    compartments.get(compartment + 1).add(cardId);
+    compartment++;
+    if (compartment < COMPARTMENT_AMOUNT) {
+      compartments.get(compartment).add(cardId);
+    }
   }
 
 }
