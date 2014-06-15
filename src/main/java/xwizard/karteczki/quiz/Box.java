@@ -8,8 +8,8 @@ public class Box {
   
   private final static int COMPARTMENT_AMOUNT = 5;
   
-  UUID id;
-  List<List<UUID>> compartments;
+  private UUID id;
+  private List<List<UUID>> compartments;
   
   Box() {
     compartments = new LinkedList<List<UUID>>();
@@ -20,11 +20,15 @@ public class Box {
   }
 
   public void addCard(int compartmentNumber, UUID cardId) {
-    if (cardId == null) throw new IllegalArgumentException("cardId cannot be null!");
+    checkNull(cardId);
     if (isIllegal(compartmentNumber)) throw new IllegalArgumentException("Illegal compartment number: " + compartmentNumber);
-    if (containsCard(cardId)) throw new IllegalStateException("Card with id " + cardId + " already exists in box " + id);
+    if (containsCard(cardId)) cardDoesntExist(cardId);
     
     compartments.get(compartmentNumber).add(cardId);
+  }
+
+  void checkNull(UUID cardId) {
+    if (cardId == null) throw new NullPointerException("cardId cannot be null!");
   }
 
   private boolean isIllegal(int compartmentNumber) {
@@ -32,12 +36,40 @@ public class Box {
   }
 
   public boolean containsCard(UUID cardId) {
-    for (List<UUID> compartment : compartments) {
-      if (compartment.contains(cardId)) {
-        return true;
+    return findCard(cardId) >= 0;
+  }
+
+  boolean containsCard(int compartmentNumber, UUID cardId) {
+    List<UUID> compartment = compartments.get(compartmentNumber);
+    return compartment.contains(cardId);
+  }
+  
+  private int findCard(UUID cardId) {
+    for (int i = 0; i < COMPARTMENT_AMOUNT; i++) {
+      if(containsCard(i, cardId)) {
+        return i;
       }
     }
-    return false;
+    return -1;
+  }
+
+  public void moveCardToFirst(UUID cardId) {
+    checkNull(cardId);
+    int compartment = findCard(cardId);
+    if (compartment < 0) cardDoesntExist(cardId);
+    
+    compartments.get(compartment).remove(cardId);
+    compartments.get(0).add(cardId);
+  }
+
+  void cardDoesntExist(UUID cardId) {
+    throw new IllegalArgumentException("Card " + cardId + "doesn' exist in box " + id);
+  }
+
+  public void advanceCard(UUID cardId) {
+    int compartment = findCard(cardId);
+    compartments.get(compartment).remove(cardId);
+    compartments.get(compartment + 1).add(cardId);
   }
 
 }

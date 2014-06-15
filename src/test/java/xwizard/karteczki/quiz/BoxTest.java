@@ -21,7 +21,7 @@ public class BoxTest {
   public void addCard() {
     box.addCard(1, cardId);
     
-    Assert.assertTrue(box.containsCard(cardId));
+    Assert.assertTrue(box.containsCard(1, cardId));
   }
   
   @Test
@@ -31,11 +31,11 @@ public class BoxTest {
     box.addCard(1, cardId);
     box.addCard(2, cardId2);
     
-    Assert.assertTrue(box.containsCard(cardId));
-    Assert.assertTrue(box.containsCard(cardId2));
+    Assert.assertTrue(box.containsCard(1, cardId));
+    Assert.assertTrue(box.containsCard(2, cardId2));
   }
   
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void addCardWithNullId() {
     box.addCard(0, null);
   }
@@ -45,9 +45,37 @@ public class BoxTest {
     box.addCard(Integer.MAX_VALUE, cardId);
   }
   
-  @Test(expected = IllegalStateException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void addExistingCard() {
     box.addCard(2, cardId);
     box.addCard(0, cardId);
+  }
+  
+  @Test
+  public void moveCardToFirst() {
+    box.addCard(1, cardId);
+    
+    box.moveCardToFirst(cardId);
+    
+    Assert.assertTrue(box.containsCard(0, cardId));
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void moveNotExistingCardToFirst() {
+    box.moveCardToFirst(cardId);
+  }
+  
+  @Test(expected = NullPointerException.class)
+  public void moveNullCardToFirst() {
+    box.moveCardToFirst(null);
+  }
+  
+  @Test
+  public void advanceCard() {
+    box.addCard(3, cardId);
+    
+    box.advanceCard(cardId);
+    
+    Assert.assertTrue(box.containsCard(4, cardId));
   }
 }
