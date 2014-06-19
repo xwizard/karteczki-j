@@ -52,22 +52,22 @@ public class BoxTest {
   }
   
   @Test
-  public void moveCardToFirst() {
+  public void degradeCard() {
     box.addCard(1, cardId);
     
-    box.moveCardToFirst(cardId);
+    box.degradeCard(cardId);
     
     Assert.assertTrue(box.containsCard(0, cardId));
   }
   
   @Test(expected = IllegalArgumentException.class)
-  public void moveNotExistingCardToFirst() {
-    box.moveCardToFirst(cardId);
+  public void degradeNotExistingCard() {
+    box.degradeCard(cardId);
   }
   
   @Test(expected = NullPointerException.class)
-  public void moveNullCardToFirst() {
-    box.moveCardToFirst(null);
+  public void degradeNullCard() {
+    box.degradeCard(null);
   }
   
   @Test

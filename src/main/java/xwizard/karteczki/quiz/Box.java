@@ -53,7 +53,7 @@ public class Box {
     return -1;
   }
 
-  public void moveCardToFirst(UUID cardId) {
+  public void degradeCard(UUID cardId) {
     checkNull(cardId);
     
     int compartment = findCard(cardId);
