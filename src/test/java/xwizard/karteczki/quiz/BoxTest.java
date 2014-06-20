@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import xwizard.karteczki.events.AbstractCardEvent;
 import xwizard.karteczki.events.CardAdvancedEvent;
 import xwizard.karteczki.events.EventEmitterMock;
 

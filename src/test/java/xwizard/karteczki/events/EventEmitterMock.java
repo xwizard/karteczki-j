@@ -34,6 +34,7 @@ public class EventEmitterMock implements EventEmitter {
     }
   }
   
+  @SuppressWarnings("unchecked")
   public <T extends EventObject> T getEvent(Class<T> clazz, int eventNumber) {
     List<EventObject> eventList = events.get(clazz);
     if (eventList == null) throw new AssertionError("Expected at least" + eventNumber + " of " + clazz.getCanonicalName() + ", was 0");
