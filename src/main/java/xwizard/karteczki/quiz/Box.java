@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import xwizard.karteczki.events.CardAdvancedEvent;
+import xwizard.karteczki.events.EventEmitter;
+
 public class Box {
   
   private final static int COMPARTMENT_AMOUNT = 5;
@@ -11,7 +14,10 @@ public class Box {
   private UUID id;
   private List<List<UUID>> compartments;
   
-  Box() {
+  private final EventEmitter eventEmitter;
+  
+  Box(EventEmitter eventEmitter) {
+    this.eventEmitter = eventEmitter;
     compartments = new LinkedList<List<UUID>>();
     id = UUID.randomUUID();
     for (int i = 0; i < COMPARTMENT_AMOUNT; i++) {
@@ -80,6 +86,8 @@ public class Box {
     if (compartment < COMPARTMENT_AMOUNT) {
       compartments.get(compartment).add(cardId);
     }
+    
+    eventEmitter.emit(new CardAdvancedEvent(this, cardId));
   }
 
 }

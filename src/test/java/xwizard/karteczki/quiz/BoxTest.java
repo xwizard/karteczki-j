@@ -6,14 +6,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import xwizard.karteczki.events.AbstractCardEvent;
+import xwizard.karteczki.events.CardAdvancedEvent;
+import xwizard.karteczki.events.EventEmitterMock;
+
 public class BoxTest {
 
   private Box box;
   private UUID cardId;
+  private EventEmitterMock eventEmitter;
   
   @Before
   public void setUp() {
-    box = new Box();
+    eventEmitter = new EventEmitterMock();
+    box = new Box(eventEmitter);
     cardId = UUID.randomUUID();
   }
 
@@ -96,5 +102,7 @@ public class BoxTest {
     box.advanceCard(cardId);
     
     Assert.assertFalse(box.containsCard(cardId));
+    eventEmitter.assertEmitted(CardAdvancedEvent.class, 1);
+    Assert.assertEquals(((AbstractCardEvent)eventEmitter.events.get(CardAdvancedEvent.class).get(0)).getCardId(), cardId);
   }
 }
