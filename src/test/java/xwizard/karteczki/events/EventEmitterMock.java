@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EventEmitterMock implements EventEmitter {
-  public Map<Class<?>, List<EventObject>> events;
+  private Map<Class<?>, List<EventObject>> events;
 
   public EventEmitterMock() {
     events = new HashMap<Class<?>, List<EventObject>>();
@@ -24,10 +24,19 @@ public class EventEmitterMock implements EventEmitter {
   }
   
   public void assertEmitted(Class<?> clazz, int eventsCount) {
+    if (eventsCount < 0) throw new IllegalArgumentException("eventsCount cannot be less than 0!");
     List<EventObject> eventList = events.get(clazz);
+    if (eventList == null && eventsCount > 0) {
+      throw new AssertionError("Expected " + eventsCount + " of " + clazz.getCanonicalName() + ", was 0");
+    }
     if (eventList.size() != eventsCount) {
-      throw new AssertionError();
+      throw new AssertionError("Expected " + eventsCount + " of " + clazz.getCanonicalName() + ", was " + eventList.size());
     }
   }
-
+  
+  public <T extends EventObject> T getEvent(Class<T> clazz, int eventNumber) {
+    List<EventObject> eventList = events.get(clazz);
+    if (eventList == null) throw new AssertionError("Expected at least" + eventNumber + " of " + clazz.getCanonicalName() + ", was 0");
+    return ((T)eventList.get(eventNumber));
+  }
 }

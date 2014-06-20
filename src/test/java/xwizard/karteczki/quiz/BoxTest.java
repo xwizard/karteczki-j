@@ -103,6 +103,6 @@ public class BoxTest {
     
     Assert.assertFalse(box.containsCard(cardId));
     eventEmitter.assertEmitted(CardAdvancedEvent.class, 1);
-    Assert.assertEquals(((AbstractCardEvent)eventEmitter.events.get(CardAdvancedEvent.class).get(0)).getCardId(), cardId);
+    Assert.assertEquals(eventEmitter.getEvent(CardAdvancedEvent.class, 0).getCardId(), cardId);
   }
 }

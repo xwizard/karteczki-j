@@ -10,6 +10,7 @@ public abstract class AbstractCardEvent extends EventObject {
 
   public AbstractCardEvent(Object source, UUID cardId) {
     super(source);
+    if (cardId == null) throw new IllegalStateException("cardId cannot be null");
     this.cardId = cardId;
   }
 
