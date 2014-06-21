@@ -11,12 +11,14 @@ import xwizard.karteczki.events.QuizFinishedEvent;
 
 public class Quiz {
   private final UUID id;
+  private final UUID originatingBoxId;
   private List<UUID> cards;
   private final EventEmitter eventEmitter;
   
-  Quiz(UUID id, List<UUID> cards, EventEmitter eventEmitter) {
+  Quiz(UUID originatingBoxId, List<UUID> cards, EventEmitter eventEmitter) {
     super();
-    this.id = id;
+    this.id = UUID.randomUUID();
+    this.originatingBoxId = originatingBoxId;
     this.cards = new ArrayList<UUID>();
     this.cards.addAll(cards);
     this.eventEmitter = eventEmitter;
@@ -28,7 +30,7 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    eventEmitter.emit(new CardCorrectEvent(this, cardId));
+    eventEmitter.emit(new CardCorrectEvent(this, getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }
@@ -57,7 +59,7 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    eventEmitter.emit(new CardIncorrectEvent(this, cardId));
+    eventEmitter.emit(new CardIncorrectEvent(this, getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }
@@ -68,5 +70,9 @@ public class Quiz {
 
   private void checkNull(UUID cardId) {
     if (cardId == null) throw new NullPointerException("cardId cannot be null!");
+  }
+
+  public UUID getOriginatingBoxId() {
+    return originatingBoxId;
   }
 }

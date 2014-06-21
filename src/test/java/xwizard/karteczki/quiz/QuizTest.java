@@ -30,7 +30,8 @@ public class QuizTest {
     quiz.cardCorrect(cardId1);
     
     eventEmitter.assertEmitted(CardCorrectEvent.class, 1);
-    Assert.assertEquals(eventEmitter.getEvent(CardCorrectEvent.class, 0).getCardId(), cardId1);
+    Assert.assertEquals(cardId1, eventEmitter.getEvent(CardCorrectEvent.class, 0).getCardId());
+    Assert.assertEquals(quiz.getOriginatingBoxId(), eventEmitter.getEvent(CardCorrectEvent.class, 0).getBoxId());
   }
   
   @Test
@@ -56,6 +57,7 @@ public class QuizTest {
     
     eventEmitter.assertEmitted(CardIncorrectEvent.class, 1);
     Assert.assertEquals(cardId2, eventEmitter.getEvent(CardIncorrectEvent.class, 0).getCardId());
+    Assert.assertEquals(quiz.getOriginatingBoxId(), eventEmitter.getEvent(CardIncorrectEvent.class, 0).getBoxId());
   }
   
   @Test

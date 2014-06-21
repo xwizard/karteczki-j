@@ -16,7 +16,7 @@ public class Box {
   
   private final EventEmitter eventEmitter;
   
-  Box(EventEmitter eventEmitter) {
+  public Box(EventEmitter eventEmitter) {
     this.eventEmitter = eventEmitter;
     compartments = new LinkedList<List<UUID>>();
     id = UUID.randomUUID();
@@ -24,8 +24,12 @@ public class Box {
       compartments.add(new LinkedList<UUID>());
     }
   }
+  
+  public void addCard(UUID cardId) {
+    addCard(0, cardId);
+  }
 
-  public void addCard(int compartmentNumber, UUID cardId) {
+  void addCard(int compartmentNumber, UUID cardId) {
     checkNull(cardId);
     if (isIllegal(compartmentNumber)) throw new IllegalArgumentException("Illegal compartment number: " + compartmentNumber);
     if (containsCard(cardId)) cardDoesntExist(cardId);
@@ -87,7 +91,11 @@ public class Box {
       compartments.get(compartment).add(cardId);
     }
     
-    eventEmitter.emit(new CardAdvancedEvent(this, cardId));
+    eventEmitter.emit(new CardAdvancedEvent(this, id, cardId));
+  }
+
+  public UUID getId() {
+    return id;
   }
 
 }
