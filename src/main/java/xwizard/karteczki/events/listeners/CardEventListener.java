@@ -4,6 +4,6 @@ import java.util.EventListener;
 
 import xwizard.karteczki.events.AbstractCardEvent;
 
-public interface CardCorrectListener extends EventListener {
-  void cardCorrect(AbstractCardEvent event);
+public interface CardEventListener<T extends AbstractCardEvent> extends EventListener {
+  void onCardEvent(T event);
 }

@@ -17,7 +17,7 @@ public class CardCorrectListenerImplTest {
   private Box box;
   private UUID cardId;
   private UUID boxId;
-  private CardCorrectListener listener;
+  private CardEventListener<CardCorrectEvent> listener;
   private BoxRepo boxRepo;
   
   @Before
@@ -35,7 +35,7 @@ public class CardCorrectListenerImplTest {
   
   @Test
   public void cardCorrectEventShouldAdvanceCard() {
-    listener.cardCorrect(new CardCorrectEvent(this, box.getId(), cardId));
+    listener.onCardEvent(new CardCorrectEvent(this, box.getId(), cardId));
     
     verify(box).advanceCard(cardId);
   }
