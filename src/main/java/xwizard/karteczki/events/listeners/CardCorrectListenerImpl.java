@@ -7,7 +7,7 @@ import xwizard.karteczki.repos.BoxRepo;
 public class CardCorrectListenerImpl implements CardEventListener<CardCorrectEvent> {
   private final BoxRepo boxRepo;
 
-  CardCorrectListenerImpl(BoxRepo boxRepo) {
+  public CardCorrectListenerImpl(BoxRepo boxRepo) {
     super();
     this.boxRepo = boxRepo;
   }
