@@ -16,10 +16,13 @@ public class Box {
   
   private final EventEmitter eventEmitter;
   
-  public Box(EventEmitter eventEmitter) {
+  Box(UUID id, EventEmitter eventEmitter) {
+    if (id == null) throw new NullPointerException("id cannot be null!");
+    if (eventEmitter == null) throw new NullPointerException("eventEmitter cannot be null!");
+    
     this.eventEmitter = eventEmitter;
     compartments = new LinkedList<List<UUID>>();
-    id = UUID.randomUUID();
+    this.id = id;
     for (int i = 0; i < COMPARTMENT_AMOUNT; i++) {
       compartments.add(new LinkedList<UUID>());
     }

@@ -12,13 +12,15 @@ import xwizard.karteczki.events.EventEmitterMock;
 public class BoxTest {
 
   private Box box;
+  private BoxFactory boxFactory;
   private UUID cardId;
   private EventEmitterMock eventEmitter;
   
   @Before
   public void setUp() {
     eventEmitter = new EventEmitterMock();
-    box = new Box(eventEmitter);
+    boxFactory = new BoxFactory(eventEmitter);
+    box = boxFactory.createWithRandomId();
     cardId = UUID.randomUUID();
   }
 
