@@ -30,14 +30,14 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    eventEmitter.emit(new CardCorrectEvent(this, getOriginatingBoxId(), cardId));
+    eventEmitter.emit(new CardCorrectEvent(getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }
 
   private void emitEventIfQuizFinished() {
     if (cards.isEmpty()) {
-      eventEmitter.emit(new QuizFinishedEvent(this, id));
+      eventEmitter.emit(new QuizFinishedEvent(id));
     }
   }
 
@@ -59,7 +59,7 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    eventEmitter.emit(new CardIncorrectEvent(this, getOriginatingBoxId(), cardId));
+    eventEmitter.emit(new CardIncorrectEvent(getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }

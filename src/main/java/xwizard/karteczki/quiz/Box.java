@@ -94,7 +94,7 @@ public class Box {
       compartments.get(compartment).add(cardId);
     }
     
-    eventEmitter.emit(new CardAdvancedEvent(this, id, cardId));
+    eventEmitter.emit(new CardAdvancedEvent(id, cardId));
   }
 
   public UUID getId() {

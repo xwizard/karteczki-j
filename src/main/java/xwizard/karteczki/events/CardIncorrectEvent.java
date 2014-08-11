@@ -3,10 +3,12 @@ package xwizard.karteczki.events;
 import java.util.UUID;
 
 public class CardIncorrectEvent extends AbstractCardEvent {
-  private static final long serialVersionUID = -3490401171244066596L;
-
-  public CardIncorrectEvent(Object source, UUID boxId, UUID cardId) {
-    super(source, boxId, cardId);
+  CardIncorrectEvent(UUID eventId, UUID boxId, UUID cardId) {
+    super(eventId, boxId, cardId);
+  }
+  
+  public CardIncorrectEvent(UUID boxId, UUID cardId) {
+    super(UUID.randomUUID(), boxId, cardId);
   }
 
 }

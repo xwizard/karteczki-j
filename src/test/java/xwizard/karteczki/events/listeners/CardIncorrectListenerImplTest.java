@@ -35,7 +35,7 @@ public class CardIncorrectListenerImplTest {
   
   @Test
   public void cardCorrectEventShouldAdvanceCard() {
-    listener.onCardEvent(new CardIncorrectEvent(this, box.getId(), cardId));
+    listener.onCardEvent(new CardIncorrectEvent(box.getId(), cardId));
     
     verify(box).degradeCard(cardId);
   }
