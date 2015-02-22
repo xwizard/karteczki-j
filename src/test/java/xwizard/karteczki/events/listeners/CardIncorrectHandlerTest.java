@@ -10,14 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import xwizard.karteczki.events.CardIncorrectEvent;
+import xwizard.karteczki.events.Handler;
 import xwizard.karteczki.quiz.Box;
 import xwizard.karteczki.repos.BoxRepo;
 
-public class CardIncorrectListenerImplTest {
+public class CardIncorrectHandlerTest {
   private Box box;
   private UUID cardId;
   private UUID boxId;
-  private CardEventListener<CardIncorrectEvent> listener;
+  private Handler<CardIncorrectEvent> handler;
   private BoxRepo boxRepo;
   
   @Before
@@ -30,12 +31,12 @@ public class CardIncorrectListenerImplTest {
     
     boxRepo = mock(BoxRepo.class);
     when(boxRepo.get(boxId)).thenReturn(box);
-    listener = new CardIncorrectListenerImpl(boxRepo);
+    handler = new CardIncorrectHandler(boxRepo);
   }
   
   @Test
   public void cardCorrectEventShouldAdvanceCard() {
-    listener.onCardEvent(new CardIncorrectEvent(box.getId(), cardId));
+    handler.handle(new CardIncorrectEvent(box.getId(), cardId));
     
     verify(box).degradeCard(cardId);
   }

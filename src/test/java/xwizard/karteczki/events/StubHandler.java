@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventEmitterMock implements EventEmitter {
-  private Map<Class<?>,List<Event>> events;
+public class StubHandler implements Handler<Event>{
+  private final Map<Class<?>,List<Event>> events;
 
-  public EventEmitterMock() {
+  public StubHandler() {
     events = new HashMap<Class<?>, List<Event>>();
   }
 
-  public void emit(Event event) {
+  public void handle(Event event) {
     List<Event> eventList = events.get(event.getClass());
     if (eventList == null) {
       eventList = new ArrayList<Event>();
@@ -38,5 +38,9 @@ public class EventEmitterMock implements EventEmitter {
     List<Event> eventList = events.get(clazz);
     if (eventList == null) throw new AssertionError("Expected at least" + eventNumber + " of " + clazz.getCanonicalName() + ", was 0");
     return ((T)eventList.get(eventNumber));
+  }
+
+  public boolean handles(Class<Event> aClass) {
+    return true;
   }
 }

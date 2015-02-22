@@ -1,27 +1,35 @@
 package xwizard.karteczki.quiz;
 
 import java.util.UUID;
+import org.junit.After;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import xwizard.karteczki.events.CardAdvancedEvent;
-import xwizard.karteczki.events.EventEmitterMock;
+import xwizard.karteczki.events.DomainEvents;
+import xwizard.karteczki.events.StubHandler;
 
 public class BoxTest {
 
   private Box box;
   private BoxFactory boxFactory;
   private UUID cardId;
-  private EventEmitterMock eventEmitter;
+  private StubHandler stubHandler;
   
   @Before
   public void setUp() {
-    eventEmitter = new EventEmitterMock();
-    boxFactory = new BoxFactory(eventEmitter);
+    stubHandler = new StubHandler();
+    DomainEvents.register(stubHandler);
+    boxFactory = new BoxFactory();
     box = boxFactory.createWithRandomId();
     cardId = UUID.randomUUID();
+  }
+  
+  @After
+  public void after() {
+    DomainEvents.unregister(stubHandler);
   }
 
   @Test
@@ -103,7 +111,7 @@ public class BoxTest {
     box.advanceCard(cardId);
     
     Assert.assertFalse(box.containsCard(cardId));
-    eventEmitter.assertEmitted(CardAdvancedEvent.class, 1);
-    Assert.assertEquals(eventEmitter.getEvent(CardAdvancedEvent.class, 0).getCardId(), cardId);
+    stubHandler.assertEmitted(CardAdvancedEvent.class, 1);
+    Assert.assertEquals(stubHandler.getEvent(CardAdvancedEvent.class, 0).getCardId(), cardId);
   }
 }

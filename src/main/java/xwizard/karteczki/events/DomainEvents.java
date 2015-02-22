@@ -10,10 +10,14 @@ import java.util.List;
 
 public class DomainEvents {
 
-  private static final List<Handler<? extends Event>> handlers = new LinkedList<Handler<? extends Event>>();;
+  static final List<Handler<? extends Event>> handlers = new LinkedList<Handler<? extends Event>>();;
 
   public static <T extends Event> void register(Handler<T> handler) {
     handlers.add(handler);
+  }
+  
+  public static <T extends Event> void unregister(Handler<T> handler) {
+    handlers.remove(handler);
   }
   
   public static <T extends Event> void raise(T event) {

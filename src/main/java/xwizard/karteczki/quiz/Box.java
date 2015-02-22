@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import xwizard.karteczki.events.CardAdvancedEvent;
-import xwizard.karteczki.events.EventEmitter;
+import static xwizard.karteczki.events.DomainEvents.*;
+
 
 public class Box {
   
@@ -14,13 +15,9 @@ public class Box {
   private UUID id;
   private List<List<UUID>> compartments;
   
-  private final EventEmitter eventEmitter;
-  
-  Box(UUID id, EventEmitter eventEmitter) {
+  Box(UUID id) {
     if (id == null) throw new NullPointerException("id cannot be null!");
-    if (eventEmitter == null) throw new NullPointerException("eventEmitter cannot be null!");
     
-    this.eventEmitter = eventEmitter;
     compartments = new LinkedList<List<UUID>>();
     this.id = id;
     for (int i = 0; i < COMPARTMENT_AMOUNT; i++) {
@@ -94,7 +91,7 @@ public class Box {
       compartments.get(compartment).add(cardId);
     }
     
-    eventEmitter.emit(new CardAdvancedEvent(id, cardId));
+    raise(new CardAdvancedEvent(id, cardId));
   }
 
   public UUID getId() {

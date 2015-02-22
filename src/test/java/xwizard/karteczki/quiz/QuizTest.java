@@ -2,6 +2,7 @@ package xwizard.karteczki.quiz;
 
 import java.util.Arrays;
 import java.util.UUID;
+import org.junit.After;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,29 +10,36 @@ import org.junit.Test;
 
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.CardIncorrectEvent;
-import xwizard.karteczki.events.EventEmitterMock;
+import xwizard.karteczki.events.DomainEvents;
+import xwizard.karteczki.events.StubHandler;
 import xwizard.karteczki.events.QuizFinishedEvent;
 
 public class QuizTest {
   private Quiz quiz;
-  private EventEmitterMock eventEmitter;
+  private StubHandler stubHandler;
   private UUID cardId1, cardId2;
   
   @Before
   public void before() {
-    eventEmitter = new EventEmitterMock();
+    stubHandler = new StubHandler();
+    DomainEvents.register(stubHandler);
     cardId1 = UUID.randomUUID();
     cardId2 = UUID.randomUUID();
-    quiz = new Quiz(UUID.randomUUID(), Arrays.asList(cardId1, cardId2), eventEmitter);
+    quiz = new Quiz(UUID.randomUUID(), Arrays.asList(cardId1, cardId2));
+  }
+  
+  @After
+  public void afetr() {
+    DomainEvents.unregister(stubHandler);
   }
   
   @Test
   public void cardCorrectShouldEmitEvent() {
     quiz.cardCorrect(cardId1);
     
-    eventEmitter.assertEmitted(CardCorrectEvent.class, 1);
-    Assert.assertEquals(cardId1, eventEmitter.getEvent(CardCorrectEvent.class, 0).getCardId());
-    Assert.assertEquals(quiz.getOriginatingBoxId(), eventEmitter.getEvent(CardCorrectEvent.class, 0).getBoxId());
+    stubHandler.assertEmitted(CardCorrectEvent.class, 1);
+    Assert.assertEquals(cardId1, stubHandler.getEvent(CardCorrectEvent.class, 0).getCardId());
+    Assert.assertEquals(quiz.getOriginatingBoxId(), stubHandler.getEvent(CardCorrectEvent.class, 0).getBoxId());
   }
   
   @Test
@@ -55,9 +63,9 @@ public class QuizTest {
   public void cardIncorrectShouldEmitEvent() {
     quiz.cardIncorrect(cardId2);
     
-    eventEmitter.assertEmitted(CardIncorrectEvent.class, 1);
-    Assert.assertEquals(cardId2, eventEmitter.getEvent(CardIncorrectEvent.class, 0).getCardId());
-    Assert.assertEquals(quiz.getOriginatingBoxId(), eventEmitter.getEvent(CardIncorrectEvent.class, 0).getBoxId());
+    stubHandler.assertEmitted(CardIncorrectEvent.class, 1);
+    Assert.assertEquals(cardId2, stubHandler.getEvent(CardIncorrectEvent.class, 0).getCardId());
+    Assert.assertEquals(quiz.getOriginatingBoxId(), stubHandler.getEvent(CardIncorrectEvent.class, 0).getBoxId());
   }
   
   @Test
@@ -96,8 +104,8 @@ public class QuizTest {
     quiz.cardCorrect(cardId2);
     quiz.cardCorrect(cardId1);
     
-    eventEmitter.assertEmitted(QuizFinishedEvent.class, 1);
-    Assert.assertEquals(quiz.getId(), eventEmitter.getEvent(QuizFinishedEvent.class, 0).getQuizId());
+    stubHandler.assertEmitted(QuizFinishedEvent.class, 1);
+    Assert.assertEquals(quiz.getId(), stubHandler.getEvent(QuizFinishedEvent.class, 0).getQuizId());
   }
   
   @Test
@@ -105,7 +113,7 @@ public class QuizTest {
     quiz.cardCorrect(cardId2);
     quiz.cardIncorrect(cardId1);
     
-    eventEmitter.assertEmitted(QuizFinishedEvent.class, 1);
-    Assert.assertEquals(quiz.getId(), eventEmitter.getEvent(QuizFinishedEvent.class, 0).getQuizId());
+    stubHandler.assertEmitted(QuizFinishedEvent.class, 1);
+    Assert.assertEquals(quiz.getId(), stubHandler.getEvent(QuizFinishedEvent.class, 0).getQuizId());
   }
 }
