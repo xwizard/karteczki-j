@@ -1,4 +1,4 @@
-package xwizard.karteczki.events.listeners;
+package xwizard.karteczki.events.handlers;
 
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.Handler;
