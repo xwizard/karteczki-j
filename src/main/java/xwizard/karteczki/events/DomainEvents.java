@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xwizard.karteczki.events;
 
 import java.util.LinkedList;
@@ -20,7 +15,7 @@ public class DomainEvents {
     handlers.remove(handler);
   }
   
-  public static <T extends Event> void raise(T event) {
+  public static <E extends Event> void raise(E event) {
     for (Handler handler : handlers) {
       if (handler.handles(event.getClass())) {
         handler.handle(event);
