@@ -1,2 +1,2 @@
 # Karteczki
-Small word training appa
+Small word training app.
