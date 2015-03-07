@@ -4,10 +4,10 @@ import java.util.UUID;
 
 interface Repo<T> {
 
-  public abstract void save(T box);
+  public abstract void save(T entity);
 
-  public abstract T get(UUID boxId);
+  public abstract T get(UUID id);
 
-  public abstract void delete(UUID boxId);
+  public abstract void delete(UUID id);
 
 }

@@ -12,26 +12,26 @@ import java.util.ResourceBundle;
  */
 public class SWTHelloWorld {
   private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("xwizard.karteczki.gui.messages"); //$NON-NLS-1$
- 
-public static void main (String [] args) {
-    Display display = new Display ();
+  public static void main(String[] args) {
+    Display display = new Display();
     Shell shell = new Shell(display);
     shell.setSize(152, 105);
- 
+
     Text helloWorldTest = new Text(shell, SWT.NONE);
     helloWorldTest.setLocation(40, 5);
     helloWorldTest.setText("Hello World SWT");
     helloWorldTest.pack();
-    
+
     Button button = new Button(shell, SWT.PUSH);
     button.setText("Click");
     button.pack();
- 
+
     shell.pack();
-    shell.open ();
-    while (!shell.isDisposed ()) {
-        if (!display.readAndDispatch ()) display.sleep ();
+    shell.open();
+    while (!shell.isDisposed()) {
+      if (!display.readAndDispatch())
+        display.sleep();
     }
-    display.dispose ();
-}
+    display.dispose();
+  }
 }
