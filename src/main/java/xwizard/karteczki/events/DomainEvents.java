@@ -15,6 +15,7 @@ public class DomainEvents {
     handlers.remove(handler);
   }
   
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static <E extends Event> void raise(E event) {
     for (Handler handler : handlers) {
       if (handler.handles(event.getClass())) {
