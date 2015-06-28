@@ -18,7 +18,10 @@ public class SWTHelloWorld {
     shell.pack();
     shell.setLayout(new FillLayout(SWT.HORIZONTAL));
     
-    new StyledText(shell, SWT.BORDER);
+    StyledText styledText = new StyledText(shell, SWT.BORDER);
+    
+    styledText.setText(System.getProperty("user.home"));
+    
     shell.open();
     while (!shell.isDisposed()) {
       if (!display.readAndDispatch())
