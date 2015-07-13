@@ -2,35 +2,38 @@ package xwizard.karteczki.quiz;
 
 import java.util.Arrays;
 import java.util.UUID;
-import org.junit.After;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.eventbus.EventBus;
+
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.CardIncorrectEvent;
-import xwizard.karteczki.events.DomainEvents;
-import xwizard.karteczki.events.StubHandler;
 import xwizard.karteczki.events.QuizFinishedEvent;
+import xwizard.karteczki.events.StubHandler;
 
 public class QuizTest {
   private Quiz quiz;
   private StubHandler stubHandler;
+  private EventBus eventBus;
   private UUID cardId1, cardId2;
   
   @Before
   public void before() {
     stubHandler = new StubHandler();
-    DomainEvents.register(stubHandler);
+    eventBus = new EventBus();
+    eventBus.register(stubHandler);
     cardId1 = UUID.randomUUID();
     cardId2 = UUID.randomUUID();
-    quiz = new Quiz(UUID.randomUUID(), Arrays.asList(cardId1, cardId2));
+    quiz = new Quiz(UUID.randomUUID(), Arrays.asList(cardId1, cardId2), eventBus);
   }
   
   @After
   public void afetr() {
-    DomainEvents.unregister(stubHandler);
+    eventBus.unregister(stubHandler);
   }
   
   @Test

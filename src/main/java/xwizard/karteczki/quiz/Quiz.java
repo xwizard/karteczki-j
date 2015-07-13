@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.common.eventbus.EventBus;
+
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.CardIncorrectEvent;
-import static xwizard.karteczki.events.DomainEvents.raise;
 import xwizard.karteczki.events.QuizFinishedEvent;
 
 public class Quiz {
+  private final EventBus eventBus;
+  
   private final UUID id;
   private final UUID originatingBoxId;
   private List<UUID> cards;
   
-  Quiz(UUID originatingBoxId, List<UUID> cards) {
-    super();
+  Quiz(UUID originatingBoxId, List<UUID> cards, EventBus eventBus) {
+    this.eventBus = eventBus;
     this.id = UUID.randomUUID();
     this.originatingBoxId = originatingBoxId;
     this.cards = new ArrayList<UUID>();
@@ -28,14 +31,14 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    raise(new CardCorrectEvent(getOriginatingBoxId(), cardId));
+    eventBus.post(new CardCorrectEvent(getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }
 
   private void emitEventIfQuizFinished() {
     if (cards.isEmpty()) {
-      raise(new QuizFinishedEvent(id));
+      eventBus.post(new QuizFinishedEvent(id));
     }
   }
 
@@ -57,7 +60,7 @@ public class Quiz {
     checkIfContainsCard(cardId);
     
     cards.remove(cardId);
-    raise(new CardIncorrectEvent(getOriginatingBoxId(), cardId));
+    eventBus.post(new CardIncorrectEvent(getOriginatingBoxId(), cardId));
     
     emitEventIfQuizFinished();
   }

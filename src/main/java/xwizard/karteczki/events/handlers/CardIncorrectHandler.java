@@ -1,11 +1,12 @@
 package xwizard.karteczki.events.handlers;
 
+import com.google.common.eventbus.Subscribe;
+
 import xwizard.karteczki.events.CardIncorrectEvent;
-import xwizard.karteczki.events.Handler;
 import xwizard.karteczki.quiz.Box;
 import xwizard.karteczki.repos.BoxRepo;
 
-public class CardIncorrectHandler implements Handler<CardIncorrectEvent> {
+public class CardIncorrectHandler {
   private final BoxRepo boxRepo;
 
   public CardIncorrectHandler(BoxRepo boxRepo) {
@@ -13,13 +14,9 @@ public class CardIncorrectHandler implements Handler<CardIncorrectEvent> {
     this.boxRepo = boxRepo;
   }
 
+  @Subscribe
   public void handle(CardIncorrectEvent event) {
     Box box = boxRepo.get(event.getBoxId());
     box.degradeCard(event.getCardId());
   }
-
-  public boolean handles(Class<CardIncorrectEvent> aClass) {
-    return CardIncorrectEvent.class.equals(aClass);
-  }
-
 }

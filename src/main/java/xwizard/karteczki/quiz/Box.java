@@ -4,22 +4,28 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.common.eventbus.EventBus;
+
 import xwizard.karteczki.events.CardAdvancedEvent;
-import static xwizard.karteczki.events.DomainEvents.*;
 
 
 public class Box {
   
   private final static int COMPARTMENT_AMOUNT = 5;
   
+  private final EventBus eventBus;
+  
   private UUID id;
   private List<List<UUID>> compartments;
   
-  Box(UUID id) {
+  Box(UUID id, EventBus eventBus) {
     if (id == null) throw new NullPointerException("id cannot be null!");
+    if (eventBus == null) throw new NullPointerException("eventBus cannot be null!");
+    
+    this.id = id;
+    this.eventBus = eventBus;
     
     compartments = new LinkedList<List<UUID>>();
-    this.id = id;
     for (int i = 0; i < COMPARTMENT_AMOUNT; i++) {
       compartments.add(new LinkedList<UUID>());
     }
@@ -91,7 +97,7 @@ public class Box {
       compartments.get(compartment).add(cardId);
     }
     
-    raise(new CardAdvancedEvent(id, cardId));
+    eventBus.post(new CardAdvancedEvent(id, cardId));
   }
 
   public UUID getId() {

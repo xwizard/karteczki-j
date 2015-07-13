@@ -1,14 +1,15 @@
 package xwizard.karteczki.quiz;
 
 import java.util.UUID;
-import org.junit.After;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.eventbus.EventBus;
+
 import xwizard.karteczki.events.CardAdvancedEvent;
-import xwizard.karteczki.events.DomainEvents;
 import xwizard.karteczki.events.StubHandler;
 
 public class BoxTest {
@@ -17,19 +18,21 @@ public class BoxTest {
   private BoxFactory boxFactory;
   private UUID cardId;
   private StubHandler stubHandler;
+  private EventBus eventBus;
   
   @Before
   public void setUp() {
     stubHandler = new StubHandler();
-    DomainEvents.register(stubHandler);
-    boxFactory = new BoxFactory();
+    eventBus = new EventBus();
+    eventBus.register(stubHandler);
+    boxFactory = new BoxFactory(eventBus);
     box = boxFactory.createWithRandomId();
     cardId = UUID.randomUUID();
   }
   
   @After
   public void after() {
-    DomainEvents.unregister(stubHandler);
+    eventBus.unregister(stubHandler);
   }
 
   @Test

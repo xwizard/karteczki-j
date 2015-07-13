@@ -5,26 +5,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StubHandler implements Handler<Event>{
-  private final Map<Class<?>,List<Event>> events;
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.Subscribe;
+
+public class StubHandler {
+  private final Map<Class<?>,List<Object>> events;
 
   public StubHandler() {
-    events = new HashMap<Class<?>, List<Event>>();
+    events = new HashMap<Class<?>, List<Object>>();
   }
 
-  public void handle(Event event) {
-    List<Event> eventList = events.get(event.getClass());
+  @Subscribe
+  public void handle(DeadEvent event) {
+    Object realEvent = event.getEvent();
+    List<Object> eventList = events.get(realEvent.getClass());
     if (eventList == null) {
-      eventList = new ArrayList<Event>();
-      events.put(event.getClass(), eventList);
+      eventList = new ArrayList<Object>();
+      events.put(realEvent.getClass(), eventList);
     }
     
-    eventList.add(event);
+    eventList.add(realEvent);
   }
   
   public void assertEmitted(Class<?> clazz, int eventsCount) {
     if (eventsCount < 0) throw new IllegalArgumentException("eventsCount cannot be less than 0!");
-    List<Event> eventList = events.get(clazz);
+    List<Object> eventList = events.get(clazz);
     if (eventList == null && eventsCount > 0) {
       throw new AssertionError("Expected " + eventsCount + " of " + clazz.getCanonicalName() + ", was 0");
     }
@@ -35,12 +40,8 @@ public class StubHandler implements Handler<Event>{
   
   @SuppressWarnings("unchecked")
   public <T extends Event> T getEvent(Class<T> clazz, int eventNumber) {
-    List<Event> eventList = events.get(clazz);
+    List<Object> eventList = events.get(clazz);
     if (eventList == null) throw new AssertionError("Expected at least" + eventNumber + " of " + clazz.getCanonicalName() + ", was 0");
     return ((T)eventList.get(eventNumber));
-  }
-
-  public boolean handles(Class<Event> aClass) {
-    return true;
   }
 }

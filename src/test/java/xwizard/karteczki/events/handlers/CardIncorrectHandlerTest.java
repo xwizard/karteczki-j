@@ -1,6 +1,5 @@
-package xwizard.karteczki.events.listeners;
+package xwizard.karteczki.events.handlers;
 
-import xwizard.karteczki.events.handlers.CardIncorrectHandler;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import xwizard.karteczki.events.CardIncorrectEvent;
-import xwizard.karteczki.events.Handler;
 import xwizard.karteczki.quiz.Box;
 import xwizard.karteczki.repos.BoxRepo;
 
@@ -19,7 +17,7 @@ public class CardIncorrectHandlerTest {
   private Box box;
   private UUID cardId;
   private UUID boxId;
-  private Handler<CardIncorrectEvent> handler;
+  private CardIncorrectHandler handler;
   private BoxRepo boxRepo;
   
   @Before
