@@ -1,4 +1,4 @@
-package xwizard.karteczki.jsonRepo;
+package xwizard.karteczki.memoryRepo;
 
 import java.util.UUID;
 
