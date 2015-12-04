@@ -5,7 +5,7 @@ import java.util.UUID;
 import xwizard.karteczki.quiz.Box;
 import xwizard.karteczki.repos.BoxRepo;
 
-public class BoxRepoJsonImpl implements BoxRepo {
+public class BoxRepoMemoryImpl implements BoxRepo {
 
   @Override
   public void save(Box entity) {
