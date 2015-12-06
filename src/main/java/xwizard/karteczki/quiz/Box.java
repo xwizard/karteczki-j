@@ -7,9 +7,10 @@ import java.util.UUID;
 import com.google.common.eventbus.EventBus;
 
 import xwizard.karteczki.events.CardAdvancedEvent;
+import xwizard.karteczki.repos.Entity;
 
 
-public class Box {
+public class Box implements Entity<UUID> {
   
   private final static int COMPARTMENT_AMOUNT = 5;
   

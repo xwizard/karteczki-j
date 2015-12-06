@@ -1,12 +1,10 @@
 package xwizard.karteczki.repos;
 
-import java.util.UUID;
-
-interface Repo<T> {
+interface Repo<ID, T extends Entity<ID>> {
 
   void save(T entity);
 
-  T get(UUID id);
+  T get(ID id);
 
-  void delete(UUID id);
+  void delete(ID id);
 }

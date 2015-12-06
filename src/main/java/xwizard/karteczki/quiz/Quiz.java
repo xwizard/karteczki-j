@@ -9,8 +9,9 @@ import com.google.common.eventbus.EventBus;
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.CardIncorrectEvent;
 import xwizard.karteczki.events.QuizFinishedEvent;
+import xwizard.karteczki.repos.Entity;
 
-public class Quiz {
+public class Quiz implements Entity<UUID> {
   private final EventBus eventBus;
   
   private final UUID id;
