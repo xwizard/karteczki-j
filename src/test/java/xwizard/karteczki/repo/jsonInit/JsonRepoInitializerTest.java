@@ -1,5 +1,6 @@
 package xwizard.karteczki.repo.jsonInit;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ public class JsonRepoInitializerTest {
   private final TypeReference<List<StubEntity>> typeReference = new TypeReference<List<StubEntity>>() {};
   
   @Test
-  public void deserializesProperAmountOfObjects() {
-    JsonRepoInitializer<UUID, StubEntity> init = new JsonRepoInitializer<>(getStubJson(), typeReference);
+  public void deserializesProperAmountOfObjects() throws IOException {
+    InputStream stubJson = getStubJson();
+    JsonRepoInitializer<UUID, StubEntity> init = new JsonRepoInitializer<>(stubJson, typeReference);
+    stubJson.close();
     Map<UUID, StubEntity> result = init.getValues();
     
     Assert.assertEquals(2, result.size());

@@ -15,29 +15,25 @@ import xwizard.karteczki.repos.RepoInitializer;
 public class JsonRepoInitializer<ID, E extends Entity<ID>> implements RepoInitializer<ID, E> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
-  private final InputStream inputStream;
-  private final TypeReference<List<E>> typeReference;
+  private final Map<ID, E> itemMap;
   
   public JsonRepoInitializer(InputStream inputStream, TypeReference<List<E>> typeReference) {
     super();
-    this.inputStream = inputStream;
-    this.typeReference = typeReference;
-  }
-
-  @Override
-  public Map<ID, E> getValues() {
     List<E> items;
     try {
       items = objectMapper.readValue(inputStream, typeReference);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    Map<ID, E> result = new HashMap<>();
+    itemMap = new HashMap<>();
     for (E item : items) {
-      result.put(item.getId(), item);
+      itemMap.put(item.getId(), item);
     }
-    
-    return result;
+  }
+
+  @Override
+  public Map<ID, E> getValues() {
+    return itemMap;
   }
 
 }
