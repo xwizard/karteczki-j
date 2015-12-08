@@ -14,7 +14,7 @@ public class Box implements Entity<UUID> {
   
   private final static int COMPARTMENT_AMOUNT = 5;
   
-  private final EventBus eventBus;
+  private EventBus eventBus;
   
   private UUID id;
   private List<List<UUID>> compartments;
