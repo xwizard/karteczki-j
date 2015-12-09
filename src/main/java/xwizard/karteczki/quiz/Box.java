@@ -1,5 +1,6 @@
 package xwizard.karteczki.quiz;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -60,7 +61,7 @@ public class Box implements Entity<UUID>, EventEmitter {
     return findCard(cardId) >= 0;
   }
 
-  boolean containsCard(int compartmentNumber, UUID cardId) {
+  public boolean containsCard(int compartmentNumber, UUID cardId) {
     List<UUID> compartment = compartments.get(compartmentNumber);
     return compartment.contains(cardId);
   }
@@ -110,7 +111,7 @@ public class Box implements Entity<UUID>, EventEmitter {
   }
 
   public List<List<UUID>> getCompartments() {
-    return compartments;
+    return Collections.unmodifiableList(compartments);
   }
 
   @Override

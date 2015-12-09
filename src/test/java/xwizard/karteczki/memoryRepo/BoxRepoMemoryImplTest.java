@@ -37,4 +37,12 @@ public class BoxRepoMemoryImplTest {
     
     Assert.assertEquals(BOXID, result.getId());
   }
+  
+  @Test
+  public void boxRepoRetrievesProperCard() {
+    Box result = repo.get(BOXID);
+    
+    Assert.assertTrue(result.containsCard(0, CARDID));
+    Assert.assertFalse(result.containsCard(1, CARDID));
+  }
 }
