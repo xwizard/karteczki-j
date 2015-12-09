@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.eventbus.EventBus;
 
 import org.junit.Assert;
 
@@ -18,6 +19,7 @@ public class JsonRepoInitializerTest {
   private final static String INCORRECT_JSON_FILE_NAME = "incorrect.json";
   
   private final TypeReference<List<StubEntity>> typeReference = new TypeReference<List<StubEntity>>() {};
+  private final EventBus eventBus = new EventBus();
   
   @Test
   public void deserializesProperAmountOfObjects() throws IOException {
@@ -41,10 +43,20 @@ public class JsonRepoInitializerTest {
   public void deserializeIncorrectJsonShouldThrow() throws IOException {
     getinItializer(INCORRECT_JSON_FILE_NAME);
   }
+  
+  @Test
+  public void deserializedObjectsShouldHaveEventBusSet() throws IOException {
+    JsonRepoInitializer<UUID, StubEntity> init = getinItializer(STUB_JSON_FILE_NAME);
+    Map<UUID, StubEntity> result = init.getValues();
+    
+    for (StubEntity stubEntity : result.values()) {
+      Assert.assertEquals(eventBus, stubEntity.getEventBus());
+    }
+  }
 
   private JsonRepoInitializer<UUID, StubEntity> getinItializer(String fileName) throws IOException {
     InputStream stubJson = getStubJson(fileName);
-    JsonRepoInitializer<UUID, StubEntity> init = new JsonRepoInitializer<>(stubJson, typeReference);
+    JsonRepoInitializer<UUID, StubEntity> init = new JsonRepoInitializer<>(stubJson, eventBus, typeReference);
     stubJson.close();
     return init;
   }

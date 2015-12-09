@@ -24,8 +24,7 @@ public class BoxRepoMemoryImpl implements BoxRepo {
 
   @Override
   public Box get(UUID id) {
-    // TODO Auto-generated method stub
-    return null;
+    return boxes.get(id);
   }
 
   @Override

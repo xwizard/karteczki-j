@@ -2,10 +2,14 @@ package xwizard.karteczki.repo.jsonInit;
 
 import java.util.UUID;
 
+import com.google.common.eventbus.EventBus;
+
+import xwizard.karteczki.events.EventEmitter;
 import xwizard.karteczki.repos.Entity;
 
-public class StubEntity implements Entity<UUID> {
+public class StubEntity implements Entity<UUID>, EventEmitter {
   private final UUID id;
+  private EventBus eventBus;
   
   @SuppressWarnings("unused")
   private StubEntity() {
@@ -19,6 +23,14 @@ public class StubEntity implements Entity<UUID> {
 
   public UUID getId() {
     return id;
+  }
+
+  public void setEventBus(EventBus eventBus) {
+    this.eventBus = eventBus;
+  }
+
+  public EventBus getEventBus() {
+    return eventBus;
   }
 
   @Override

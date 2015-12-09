@@ -7,10 +7,11 @@ import java.util.UUID;
 import com.google.common.eventbus.EventBus;
 
 import xwizard.karteczki.events.CardAdvancedEvent;
+import xwizard.karteczki.events.EventEmitter;
 import xwizard.karteczki.repos.Entity;
 
 
-public class Box implements Entity<UUID> {
+public class Box implements Entity<UUID>, EventEmitter {
   
   private final static int COMPARTMENT_AMOUNT = 5;
   
@@ -18,6 +19,9 @@ public class Box implements Entity<UUID> {
   
   private UUID id;
   private List<List<UUID>> compartments;
+  
+  @SuppressWarnings("unused")
+  private Box() {}
   
   Box(UUID id, EventBus eventBus) {
     if (id == null) throw new NullPointerException("id cannot be null!");
@@ -103,6 +107,15 @@ public class Box implements Entity<UUID> {
 
   public UUID getId() {
     return id;
+  }
+
+  public List<List<UUID>> getCompartments() {
+    return compartments;
+  }
+
+  @Override
+  public void setEventBus(EventBus eventBus) {
+    this.eventBus = eventBus;
   }
 
 }
