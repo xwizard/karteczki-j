@@ -8,11 +8,12 @@ import com.google.common.eventbus.EventBus;
 
 import xwizard.karteczki.events.CardCorrectEvent;
 import xwizard.karteczki.events.CardIncorrectEvent;
+import xwizard.karteczki.events.EventEmitter;
 import xwizard.karteczki.events.QuizFinishedEvent;
 import xwizard.karteczki.repos.Entity;
 
-public class Quiz implements Entity<UUID> {
-  private final EventBus eventBus;
+public class Quiz implements Entity<UUID>, EventEmitter {
+  private EventBus eventBus;
   
   private final UUID id;
   private final UUID originatingBoxId;
@@ -77,4 +78,10 @@ public class Quiz implements Entity<UUID> {
   public UUID getOriginatingBoxId() {
     return originatingBoxId;
   }
+
+  public void setEventBus(EventBus eventBus) {
+    this.eventBus = eventBus;
+  }
+  
+  
 }
