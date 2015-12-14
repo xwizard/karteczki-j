@@ -1,5 +1,6 @@
 package xwizard.karteczki.memoryRepo;
 
+import java.util.Map;
 import java.util.UUID;
 
 import xwizard.karteczki.quiz.Quiz;
@@ -7,9 +8,13 @@ import xwizard.karteczki.repo.jsonInit.JsonRepoInitializer;
 import xwizard.karteczki.repos.QuizRepo;
 
 public class QuizRepoMemoryImpl implements QuizRepo {
+  
+  private final JsonRepoInitializer<UUID, Quiz> initializer;
+  private final Map<UUID, Quiz> map;
 
   public QuizRepoMemoryImpl(JsonRepoInitializer<UUID, Quiz> init) {
-    // TODO Auto-generated constructor stub
+    this.initializer = init;
+    map = init.getValues();
   }
 
   @Override
@@ -20,8 +25,7 @@ public class QuizRepoMemoryImpl implements QuizRepo {
 
   @Override
   public Quiz get(UUID id) {
-    // TODO Auto-generated method stub
-    return null;
+    return map.get(id);
   }
 
   @Override

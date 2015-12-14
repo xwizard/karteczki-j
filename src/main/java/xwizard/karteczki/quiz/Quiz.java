@@ -1,6 +1,7 @@
 package xwizard.karteczki.quiz;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,9 +16,12 @@ import xwizard.karteczki.repos.Entity;
 public class Quiz implements Entity<UUID>, EventEmitter {
   private EventBus eventBus;
   
-  private final UUID id;
-  private final UUID originatingBoxId;
+  private UUID id;
+  private UUID originatingBoxId;
   private List<UUID> cards;
+  
+  @SuppressWarnings("unused")
+  private Quiz() {}
   
   Quiz(UUID originatingBoxId, List<UUID> cards, EventBus eventBus) {
     this.eventBus = eventBus;
@@ -42,6 +46,10 @@ public class Quiz implements Entity<UUID>, EventEmitter {
     if (cards.isEmpty()) {
       eventBus.post(new QuizFinishedEvent(id));
     }
+  }
+
+  public List<UUID> getCards() {
+    return Collections.unmodifiableList(cards);
   }
 
   private void checkIfQuizFinished() {
