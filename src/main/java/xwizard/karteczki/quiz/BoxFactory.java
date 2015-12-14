@@ -12,11 +12,11 @@ public class BoxFactory {
     this.eventBus = eventBus;
   }
 
-  public Box create(UUID id, EventBus eventBus) {
+  public Box create(UUID id) {
     return new Box(id, eventBus);
   }
   
   public Box createWithRandomId() {
-    return create(UUID.randomUUID(), eventBus);
+    return create(UUID.randomUUID());
   }
 }
